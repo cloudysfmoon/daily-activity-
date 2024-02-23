@@ -1,0 +1,17 @@
+SELECT
+  *, 
+  CASE
+  WHEN EXTRACT(DAYOFWEEK FROM ActivityDate) = 1 THEN 'Sunday'
+  WHEN EXTRACT(DAYOFWEEK FROM ActivityDate) = 2 THEN 'Monday'
+  WHEN EXTRACT(DAYOFWEEK FROM ActivityDate) = 3 THEN 'Tuesday'
+  WHEN EXTRACT(DAYOFWEEK FROM ActivityDate) = 4 THEN 'Wednesday'
+  WHEN EXTRACT(DAYOFWEEK FROM ActivityDate) = 5 THEN 'Thursday'
+  WHEN EXTRACT(DAYOFWEEK FROM ActivityDate) = 6 THEN 'Friday'
+  ELSE 'Saturday' END AS DayOfWeek,
+  (ROUND(SedentaryMinutes/60,1)) AS SedentaryHours,
+  (ROUND((VeryActiveMinutes + FairlyActiveMinutes + LightlyActiveMinutes)/60,1)) AS TotalActiveHours
+FROM
+  `cloudysanfrancisco-412401.casestudy2.daily activity `
+WHERE
+  (VeryActiveMinutes + FairlyActiveMinutes + LightlyActiveMinutes) > 0 AND
+  Calories > 0
